@@ -4,6 +4,7 @@ import { Card } from './card';
 import { useState } from 'react';
 
 export default function Home() {
+	const [currentSelection, setCurrentSelection]= useState([-1,-1]); 
 
 	return (
 		<main className="flex flex-col h-screen w-screen bg-gray-100 p-3">
@@ -14,6 +15,9 @@ export default function Home() {
 					{[...Array(4)].map((_, colIndex) => (
 					<Card
 						key={`${rowIndex}-${colIndex}`}
+						currentSelection={currentSelection}
+						setCurrentSelection={setCurrentSelection}
+						idx = {rowIndex * 4 + colIndex}
 					/>
 					))}
 				</div>
