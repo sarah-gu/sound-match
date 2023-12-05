@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         choose_sound(num_value);
 
-
         // '90': 261.625565300598634,  //Z - C
         // '83': 277.182630976872096, //S - C#
         // '88': 293.664767917407560,  //X - D
