@@ -26,6 +26,11 @@ let mapping = generateMapping();
 export default function Home() {
 	const [currentSelection, setCurrentSelection]= useState([-1,-1]); 
 	const [matched, setMatched] = useState([]); 
+	const refreshGame = () => {
+	 mapping = generateMapping(); 
+	 setCurrentSelection([-1,-1]);
+	 setMatched([]);
+	}
 	return (
 		<main className="flex flex-col h-screen w-screen bg-gray-100 p-3">
 			<div className = "text-3xl p-8">Sound Match</div>
@@ -46,7 +51,7 @@ export default function Home() {
 				</div>
 			))}
 			</div>
-			<button className = "bg-blue-500 m-4 rounded-md w-24 h-12 flex justify-center items-center text-white" onClick={() => {mapping = generateMapping() }}>Restart</button>
+			<button className = "bg-blue-500 m-4 rounded-md w-24 h-12 flex justify-center items-center text-white" onClick={refreshGame}>Restart</button>
 		</main>
 	)
 }
