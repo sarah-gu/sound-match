@@ -3,27 +3,29 @@
 import { Card } from './card';
 import { useState } from 'react';
 
+
 const generateMapping = () => {
 	const mapping = [];
-	const values = [1, 1, 2, 2];
-  
-	while (mapping.length < 4) {
-	  const randomIndex = Math.floor(Math.random() * values.length);
-	  const randomValue = values[randomIndex];
-  
-	  mapping.push(randomValue);
-	  values.splice(randomIndex, 1);
+	for(let i = 0; i < 4; i++){
+		mapping.push(parseInt(i/2) + 1);
+	}
+
+	for (let i = mapping.length - 1; i > 0; i--) {
+	  const j = Math.floor(Math.random() * (i + 1));
+	  [mapping[i], mapping[j]] = [mapping[j], mapping[i]];
 	}
   
 	console.log(mapping);
 	return mapping;
   };
+
+let mapping = generateMapping();
+
   
 
 export default function Home() {
 	const [currentSelection, setCurrentSelection]= useState([-1,-1]); 
-	const mapping = generateMapping();
-
+	const [matched, setMatched] = useState([]); 
 	return (
 		<main className="flex flex-col h-screen w-screen bg-gray-100 p-3">
 			<div className = "text-3xl p-8">Sound Match</div>
@@ -37,11 +39,14 @@ export default function Home() {
 						setCurrentSelection={setCurrentSelection}
 						idx = {rowIndex * 2 + colIndex}
 						mapping = {mapping}
+						matched = {matched}
+						setMatched = {setMatched}
 					/>
 					))}
 				</div>
 			))}
 			</div>
+			<button className = "bg-blue-500 m-4 rounded-md w-24 h-12 flex justify-center items-center text-white" onClick={() => {mapping = generateMapping() }}>Restart</button>
 		</main>
 	)
 }
