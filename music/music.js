@@ -1,3 +1,5 @@
+import { bestMusicPieces } from './evolution.js';
+
 document.addEventListener("DOMContentLoaded", function(event) {
     const play = document.getElementById("play");
 
@@ -14,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
         choose_sound(num_value);
-
 
         // '90': 261.625565300598634,  //Z - C
         // '83': 277.182630976872096, //S - C#
@@ -43,38 +44,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         function choose_sound(number) {
             number = parseInt(number, 10);
+            var frequencies = [];
 
             switch(number) {
                 case 1:
-                    frequencies = [987.766602512248223, 880.000000000000000, 783.990871963498588, 880.000000000000000, 987.766602512248223];
+                    frequencies = bestMusicPieces[0];
                 break;
 
                 case 2:
-                    frequencies = [329.627556912869929, 391.995435981749294, 391.995435981749294, 369.994422711634398, 440.000000000000000];
+                    frequencies = bestMusicPieces[1];
                 break;
 
                 case 3:
-                // code block
+                    frequencies = bestMusicPieces[2];
                 break;
 
                 case 4:
-                // code block
+                    frequencies = bestMusicPieces[3];
                 break;
 
                 case 5:
-                // code block
+                    frequencies = bestMusicPieces[4];
                 break;
 
                 case 6:
-                // code block
+                    frequencies = bestMusicPieces[5];
                 break;
 
                 case 7:
-                // code block
+                    frequencies = bestMusicPieces[6];
                 break;
 
                 case 8:
-                // code block
+                    frequencies = bestMusicPieces[7];
                 break;
 
                 default:
@@ -99,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             
             console.log("play")
 
-            selectedWaveform = 'sine';
+            var selectedWaveform = 'sine';
 
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain(); 
