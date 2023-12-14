@@ -32,9 +32,9 @@ export const Card = ({currentSelection, setCurrentSelection, idx, mapping, match
 	return (
 		<button
 		  className={`h-64 w-64 flex justify-center items-center rounded-lg ${
-			matched.includes(idx) ? 'bg-green-500' : currentSelection[0] === idx || currentSelection[1] === idx
+			matched.includes(idx) ? 'bg-slate-300' : currentSelection[0] === idx || currentSelection[1] === idx
 			  ? 'bg-blue-500'  // Change to blue if only one value matches
-			  : 'bg-slate-300'
+			  : 'bg-blue-300'
 		  }`}
 		  onClick={doOnClick}
 		>
