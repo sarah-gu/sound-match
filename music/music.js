@@ -2,6 +2,7 @@ import { bestMusicPieces } from "../app/evolution.js";
 
 document.addEventListener("DOMContentLoaded", function (event) {
   const play = document.getElementById("play");
+  var synths = [];
 
   play.addEventListener("click", () => {
     const num_value = document.getElementById("soundNumber").value;
@@ -41,20 +42,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // '85': 987.766602512248223,  //U - B
 
         function getRandomSynthMethod() {
-            const synthMethods = ['useAdditive', 'useFrequency', 'useWave'];
-            const randomIndex = Math.floor(Math.random() * ((synthMethods.length - 1) - 0 + 1)) + 0;
-        
-            // Create an object to store boolean variables
-            const synthFlags = {
-                useAdditive: false,
-                useFrequency: false,
-                useWave: false
-            };
-        
-            // Set the randomly chosen variable to true
-            synthFlags[synthMethods[randomIndex]] = true;
-        
-            return synthFlags;
+            for (let i = 0; i < 8; i++) {
+                const synthMethods = ['useAdditive', 'useFrequency', 'useWave'];
+                const randomIndex = Math.floor(Math.random() * ((synthMethods.length - 1) - 0 + 1)) + 0;
+            
+                // Create an object to store boolean variables
+                const synthFlags = {
+                    useAdditive: false,
+                    useFrequency: false,
+                    useWave: false
+                };
+            
+                // Set the randomly chosen variable to true
+                synthFlags[synthMethods[randomIndex]] = true;
+
+                synths.append(synthFlags)
+            }
         }  
 
         // Function to generate a random value within a range
@@ -69,56 +72,56 @@ document.addEventListener("DOMContentLoaded", function (event) {
             switch(number) {
                 case 1:
                     frequencies = bestMusicPieces[0];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[0];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 2:
                     frequencies = bestMusicPieces[1];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[1];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 3:
                     frequencies = bestMusicPieces[2];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[2];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 4:
                     frequencies = bestMusicPieces[3];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[3];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 5:
                     frequencies = bestMusicPieces[4];
-                    synthFlags = getRandomSynthMethod();
+                    synthFlags = synths[4];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 6:
                     frequencies = bestMusicPieces[5];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[5];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 7:
                     frequencies = bestMusicPieces[6];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[6];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
 
                 case 8:
                     frequencies = bestMusicPieces[7];
-                    var synthFlags = getRandomSynthMethod();
+                    var synthFlags = synths[7];
                     console.log(synthFlags)
                     play_melody(frequencies, synthFlags.useAdditive, synthFlags.useFrequency, synthFlags.useWave);
                 break;
@@ -182,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 console.log('lfoSwitch:', lfoSwitch);
                 console.log('lfoFreq:', lfoFreq);
                 console.log('lfoGain:', lfoGain);
-
                 additive(gainNode, audioCtx, numPart, note, lfoSwitch, lfoFreq, lfoGain); // Assuming you have an additive function
             } else if (useFrequency){
                 const modIndexValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
