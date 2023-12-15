@@ -1,21 +1,19 @@
-import { bestMusicPieces } from './evolution.js';
+import { bestMusicPieces } from "../app/evolution.js";
 
-document.addEventListener("DOMContentLoaded", function(event) {
-    const play = document.getElementById("play");
+document.addEventListener("DOMContentLoaded", function (event) {
+  const play = document.getElementById("play");
 
-    play.addEventListener("click", () => {
+  play.addEventListener("click", () => {
+    const num_value = document.getElementById("soundNumber").value;
 
-        const num_value = document.getElementById("soundNumber").value;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    //Global gain variable
+    const globalGain = audioCtx.createGain();
+    globalGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+    globalGain.connect(audioCtx.destination);
 
-        //Global gain variable
-        const globalGain = audioCtx.createGain();
-        globalGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
-        globalGain.connect(audioCtx.destination);
-
-
-        choose_sound(num_value);
+    choose_sound(num_value);
 
         // '90': 261.625565300598634,  //Z - C
         // '83': 277.182630976872096, //S - C#
@@ -64,9 +62,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             return Math.random() * (max - min) + min;
         }
 
-        function choose_sound(number) {
-            number = parseInt(number, 10);
-            var frequencies = [];
+    function choose_sound(number) {
+      number = parseInt(number, 10);
+      var frequencies = [];
 
             switch(number) {
                 case 1:
