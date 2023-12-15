@@ -6,6 +6,7 @@ export function getRandomSynthMethod() {
     const synthMethods = ["useAdditive", "useFrequency", "useWave"];
     const randomIndex =
       Math.floor(Math.random() * (synthMethods.length - 1 - 0 + 1)) + 0;
+    var synthVals = [];
 
     // Create an object to store boolean variables
     const synthFlags = {
@@ -17,8 +18,23 @@ export function getRandomSynthMethod() {
     // Set the randomly chosen variable to true
     synthFlags[synthMethods[randomIndex]] = true;
 
-    synths.push(synthFlags);
+    if(synthFlags.useAdditive) {
+      const numPart = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
+      const lfoSwitch = Math.random() < 0.5; // Random boolean
+      const lfoFreq = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
+      const lfoGain = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
+      synthVals = [numPart, lfoSwitch ? 1 : 0, lfoFreq, lfoGain]
+
+    } else if(synthFlags.useFrequency){
+      const modIndexValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
+      const modFreqValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
+      synthVals = [modIndexValue, modFreqValue]
+
+    }
+    synths.push([synthFlags, synthVals]);
   }
+  console.log("synths og");
+  console.log(synths);
   return synths;
 }
 
@@ -56,7 +72,7 @@ function additive(
     osc.type = selectedWaveform;
     oscillators.push(osc); // Add the oscillator to the array
 
-    if (lfo_switch && i % 2 === 0) {
+    if (lfo_switch == 1 && i % 2 === 0) {
       const lfo = audioCtx.createOscillator();
       lfo.frequency.value = lfo_freq_val;
       const lfo_gain = audioCtx.createGain();
@@ -156,6 +172,7 @@ function play_note(
   useAdditive,
   useFrequency,
   useWave,
+  synthVals,
   globalGain,
   audioCtx,
   index,
@@ -173,7 +190,8 @@ function play_note(
   const decayTime = 0.3;
   const sustainLevel = 0.25;
   const rampVal = 0.8;
-  const divide = useFrequency || useAdditive ? 3 : 1;
+  var divide = useFrequency ? 3 : 1;
+  divide = useAdditive ? synthVals[0] : divide;
 
   const currentTime = audioCtx.currentTime;
 
@@ -196,37 +214,23 @@ function play_note(
 
   // Connect the gain node to the global gain or additive synthesis
   if (useAdditive) {
-    const numPart = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
-    const lfoSwitch = Math.random() < 0.5; // Random boolean
-    const lfoFreq = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
-    const lfoGain = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
-    console.log("Additive Synthesis:");
-    console.log("numPart:", numPart);
-    console.log("lfoSwitch:", lfoSwitch);
-    console.log("lfoFreq:", lfoFreq);
-    console.log("lfoGain:", lfoGain);
     additive(
       gainNode,
       audioCtx,
-      numPart,
+      synthVals[0],
       note,
-      lfoSwitch,
-      lfoFreq,
-      lfoGain,
+      synthVals[1],
+      synthVals[2],
+      synthVals[3],
       globalGain
     ); // Assuming you have an additive function
   } else if (useFrequency) {
-    const modIndexValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
-    const modFreqValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
-    console.log("Frequency Modulation Synthesis:");
-    console.log("modIndexValue:", modIndexValue);
-    console.log("modFreqValue:", modFreqValue);
     fmSynthesis(
       gainNode,
       audioCtx,
       note,
-      modIndexValue,
-      modFreqValue,
+      synthVals[0],
+      synthVals[1],
       globalGain
     );
   } else if (useWave) {
@@ -312,6 +316,7 @@ function play_melody(
   useAdditive,
   useFrequency,
   useWave,
+  synthVals, 
   globalGain,
   audioCtx,
   setIsPlaying
@@ -326,6 +331,7 @@ function play_melody(
         useAdditive,
         useFrequency,
         useWave,
+        synthVals,
         globalGain,
         audioCtx,
         index,
@@ -348,63 +354,74 @@ function choose_sound(
   console.log(number);
   let frequencies = [];
   let synthFlags = [];
+  let synthVals = [];
+
+  console.log("synths");
+  console.log(synths);
 
   switch (number) {
     case 1:
       frequencies = bestMusicPieces[0];
-      synthFlags = synths[0];
+      synthFlags = synths[0][0];
+      synthVals = synths[0][1];
 
       break;
 
     case 2:
       frequencies = bestMusicPieces[1];
-      synthFlags = synths[1];
-
+      synthFlags = synths[1][0];
+      synthVals = synths[1][1];
       break;
 
     case 3:
       frequencies = bestMusicPieces[2];
-      synthFlags = synths[2];
-
+      synthFlags = synths[2][0];
+      synthVals = synths[2][1];
       break;
 
     case 4:
       frequencies = bestMusicPieces[3];
-      synthFlags = synths[3];
-
+      synthFlags = synths[3][0];
+      synthVals = synths[3][1];
       break;
 
     case 5:
       frequencies = bestMusicPieces[4];
-      synthFlags = synths[4];
-
+      synthFlags = synths[4][0];
+      synthVals = synths[4][1];
       break;
 
     case 6:
       frequencies = bestMusicPieces[5];
-      synthFlags = synths[5];
-
+      synthFlags = synths[5][0];
+      synthVals = synths[5][1];
       break;
 
     case 7:
       frequencies = bestMusicPieces[6];
-      synthFlags = synths[6];
+      synthFlags = synths[6][0];
+      synthVals = synths[6][1];
       break;
 
     case 8:
       frequencies = bestMusicPieces[7];
-      synthFlags = synths[7];
+      synthFlags = synths[7][0];
+      synthVals = synths[7][1];
       break;
 
     default:
     // code block
+    console.log(synthFlags);
   }
   if (level == 3) {
+    console.log("synth_flags");
+    console.log(synthFlags);
     play_melody(
       frequencies,
       synthFlags.useAdditive,
       synthFlags.useFrequency,
       synthFlags.useWave,
+      synthVals,
       globalGain,
       audioCtx,
       setIsPlaying
@@ -415,6 +432,7 @@ function choose_sound(
       false,
       false,
       false,
+      [],
       globalGain,
       audioCtx,
       setIsPlaying

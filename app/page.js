@@ -27,7 +27,8 @@ const generateMapping = ({ gridSize, level }) => {
     var alreadySet = [];
     mapping.forEach((card, idx) => {
       if (!alreadySet.includes(card)) {
-        const synth = synthMethods[card - 1];
+        const synth = synthMethods[card - 1][0];
+        const synthVals = synthMethods[card - 1][1]
         console.log(synth);
         if (!alreadySet.includes(card)) {
           wordCards[idx] = synth.useAdditive
