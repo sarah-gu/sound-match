@@ -5,7 +5,7 @@ import { SideElement } from "./sidebar";
 import { useState, useEffect } from "react";
 import { getRandomSynthMethod } from "./music";
 
-const generateMapping = ({ gridSize }) => {
+const generateMapping = ({ gridSize, level }) => {
   console.log(gridSize);
   const mapping = [];
   for (let i = 0; i < gridSize * gridSize; i++) {
@@ -18,11 +18,36 @@ const generateMapping = ({ gridSize }) => {
   }
 
   console.log(mapping);
-  return mapping;
+
+  let synthMethods = [];
+  let wordCards = {};
+  if (level == 3) {
+    synthMethods = getRandomSynthMethod();
+    console.log(synthMethods);
+    var alreadySet = [];
+    mapping.forEach((card, idx) => {
+      if (!alreadySet.includes(card)) {
+        const synth = synthMethods[card - 1];
+        console.log(synth);
+        if (!alreadySet.includes(card)) {
+          wordCards[idx] = synth.useAdditive
+            ? "additive"
+            : synth.useFrequency
+            ? "frequency"
+            : "waveform";
+          alreadySet.push(card);
+        }
+      }
+    });
+  }
+
+  return { mapping, synthMethods, wordCards };
 };
 
-let mapping = generateMapping({ gridSize: 2 });
-let synthMethods = getRandomSynthMethod();
+let { mapping, synthMethods, wordCards } = generateMapping({
+  gridSize: 2,
+  level: 1,
+});
 
 export default function Home() {
   const [currentSelection, setCurrentSelection] = useState([-1, -1]);
@@ -35,13 +60,13 @@ export default function Home() {
   const gridSize = level == 1 ? 2 : 4;
 
   const refreshGame = () => {
-    mapping = generateMapping({ gridSize: gridSize });
+    ({ mapping, synthMethods, wordCards } = generateMapping({
+      gridSize: gridSize,
+      level: level,
+    }));
     setCurrentSelection([-1, -1]);
     setMatched([]);
     setTimer(60);
-    if (level == 3) {
-      synthMethods = getRandomSynthMethod();
-    }
   };
 
   useEffect(() => {
@@ -57,13 +82,13 @@ export default function Home() {
   const onLevelChange = (level) => {
     setLevel(level);
     setDisplayMenu(false);
-    mapping = generateMapping({ gridSize: level == 1 ? 2 : 4 });
+    ({ mapping, synthMethods, wordCards } = generateMapping({
+      gridSize: level == 1 ? 2 : 4,
+      level: level,
+    }));
     setCurrentSelection([-1, -1]);
     setMatched([]);
     setTimer(60);
-    if (level == 3) {
-      synthMethods = getRandomSynthMethod();
-    }
   };
 
   return (
@@ -137,6 +162,7 @@ export default function Home() {
                     setIsPlaying={setIsPlaying}
                     synths={synthMethods}
                     level={level}
+                    wordCards={wordCards}
                   />
                 ))}
               </div>
