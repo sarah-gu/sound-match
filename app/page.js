@@ -3,6 +3,7 @@
 import { Card } from "./card";
 import { SideElement } from "./sidebar";
 import { useState, useEffect } from "react";
+import { getRandomSynthMethod } from "./music";
 
 const generateMapping = ({ gridSize }) => {
   console.log(gridSize);
@@ -21,6 +22,7 @@ const generateMapping = ({ gridSize }) => {
 };
 
 let mapping = generateMapping({ gridSize: 2 });
+let synthMethods = getRandomSynthMethod();
 
 export default function Home() {
   const [currentSelection, setCurrentSelection] = useState([-1, -1]);
@@ -37,6 +39,9 @@ export default function Home() {
     setCurrentSelection([-1, -1]);
     setMatched([]);
     setTimer(60);
+    if (level == 3) {
+      synthMethods = getRandomSynthMethod();
+    }
   };
 
   useEffect(() => {
@@ -56,6 +61,9 @@ export default function Home() {
     setCurrentSelection([-1, -1]);
     setMatched([]);
     setTimer(60);
+    if (level == 3) {
+      synthMethods = getRandomSynthMethod();
+    }
   };
 
   return (
@@ -127,6 +135,8 @@ export default function Home() {
                     gridSize={gridSize}
                     isPlaying={isPlaying}
                     setIsPlaying={setIsPlaying}
+                    synths={synthMethods}
+                    level={level}
                   />
                 ))}
               </div>

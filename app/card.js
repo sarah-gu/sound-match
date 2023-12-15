@@ -29,6 +29,8 @@ export const Card = ({
   gridSize,
   isPlaying,
   setIsPlaying,
+  synths,
+  level,
 }) => {
   const doOnClick = () => {
     if (matched.includes(idx)) {
@@ -48,7 +50,7 @@ export const Card = ({
         setCurrentSelection([idx, -1]);
       }
       setIsPlaying(true);
-      noteHandler(mapping[idx], setIsPlaying);
+      noteHandler(mapping[idx], setIsPlaying, synths, level);
     }
     // console.log("currentSelection[0]", currentSelection[0]);
     // console.log("mapping 0:", mapping[currentSelection[0]]);
