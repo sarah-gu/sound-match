@@ -1,6 +1,6 @@
 import { bestMusicPieces } from "./evolution.js";
 
-function play_note(note, globalGain, audioCtx) {
+function play_note(note, globalGain, audioCtx, index, setIsPlaying) {
   console.log("play");
 
   const selectedWaveform = "sine";
@@ -46,22 +46,26 @@ function play_note(note, globalGain, audioCtx) {
     osc.onended = () => {
       gainNode.disconnect();
     };
+    if (index == 4) {
+      setIsPlaying(false);
+    }
   }, 300);
 }
 
-function play_melody(frequencies, globalGain, audioCtx) {
+function play_melody(frequencies, globalGain, audioCtx, setIsPlaying) {
   console.log("melody");
   const restDuration = 700; // 0.5 seconds
 
   frequencies.forEach((frequency, index) => {
     setTimeout(() => {
-      play_note(frequency, globalGain, audioCtx);
+      play_note(frequency, globalGain, audioCtx, index, setIsPlaying);
       console.log("Rest");
     }, index * restDuration);
   });
+  console.log("going here");
 }
 
-function choose_sound(number, globalGain, audioCtx) {
+function choose_sound(number, globalGain, audioCtx, setIsPlaying) {
   // number = parseInt(number, 10);
   console.log(number);
   let frequencies = [];
@@ -103,10 +107,10 @@ function choose_sound(number, globalGain, audioCtx) {
     // code block
   }
 
-  play_melody(frequencies, globalGain, audioCtx);
+  play_melody(frequencies, globalGain, audioCtx, setIsPlaying);
 }
 
-export const noteHandler = (num_value) => {
+export const noteHandler = (num_value, setIsPlaying) => {
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
   //Global gain variable
@@ -114,5 +118,5 @@ export const noteHandler = (num_value) => {
   globalGain.gain.setValueAtTime(0.8, audioCtx.currentTime);
   globalGain.connect(audioCtx.destination);
 
-  choose_sound(num_value, globalGain, audioCtx);
+  choose_sound(num_value, globalGain, audioCtx, setIsPlaying);
 };
