@@ -60,14 +60,14 @@ export default function Home() {
 
   return (
     <main className="flex flex-col h-screen w-screen bg-white">
-      <div className="text-5xl p-8 font-bold flex justify-center border-b-2 text-card-color-matched">
+      <div className="text-5xl p-8 font-bold flex justify-center border-b-2 text-black">
         sound match
       </div>
       <div className="flex flex-row m-2">
         <div className="flex flex-col p-3 basis-1/6">
           <div className="text-sm">
             <button
-              className="w-24 text-white bg-card-color-matched hover:bg-card-color-selected rounded-md h-8 flex justify-center items-center font-bold"
+              className="w-24 text-white bg-black hover:bg-card-color-selected rounded-md h-8 flex justify-center items-center font-bold"
               onClick={() => {
                 setDisplayMenu(!displayMenu);
               }}
@@ -103,6 +103,10 @@ export default function Home() {
                 : level == 2
                 ? "match sounds on a 4x4 grid. sounds generated via evolutionary method of genetic algorithm."
                 : "match sounds based on synthesis type.  sounds generated via evolutionary method of genetic algorithm + synthesis."}
+              <div className="mt-24">
+                {" "}
+                ***note: tile color does NOT correspond to match
+              </div>
             </div>
           )}
         </div>
@@ -142,10 +146,10 @@ export default function Home() {
             />
 
             <button
-              className="border border-card-color-matched text-card-color-matched hover:bg-brown m-4 rounded-full w-32 h-12 flex justify-center items-center font-bold"
+              className="border border-black text-black hover:bg-card-color-selected m-4 rounded-full w-32 h-12 flex justify-center items-center font-bold"
               onClick={refreshGame}
             >
-              RESTART
+              restart
             </button>
           </div>
         </div>
