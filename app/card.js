@@ -1,5 +1,24 @@
 import { noteHandler } from "./music";
 
+const background_colors = [
+  "bg-purple",
+  "bg-pink",
+  "bg-blue",
+  "bg-dark-pink",
+  "bg-light-blue",
+  "bg-cream",
+  "bg-pink",
+  "bg-purple",
+  "bg-blue",
+  "bg-dark-pink",
+  "bg-light-blue",
+  "bg-cream",
+  "bg-dark-pink",
+  "bg-purple",
+  "bg-pink",
+  "bg-light-blue",
+];
+
 export const Card = ({
   currentSelection,
   setCurrentSelection,
@@ -49,7 +68,7 @@ export const Card = ({
           ? "bg-card-color-matched"
           : currentSelection[0] === idx || currentSelection[1] === idx
           ? "bg-card-color-selected" // Change to blue if only one value matches
-          : "bg-card-color-unselected"
+          : background_colors[idx]
       }`}
       onClick={doOnClick}
       disabled={isPlaying || matched.includes(idx)}
