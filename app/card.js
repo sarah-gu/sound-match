@@ -7,6 +7,9 @@ export const Card = ({
   mapping,
   matched,
   setMatched,
+  gridSize,
+  isPlaying,
+  setIsPlaying,
 }) => {
   const doOnClick = () => {
     if (matched.includes(idx)) {
@@ -25,16 +28,23 @@ export const Card = ({
       } else {
         setCurrentSelection([idx, -1]);
       }
-      noteHandler(mapping[idx]);
+      setIsPlaying(true);
+      noteHandler(mapping[idx], setIsPlaying);
     }
-    console.log("currentSelection[0]", currentSelection[0]);
-    console.log("mapping 0:", mapping[currentSelection[0]]);
-    console.log("currentSelection[1]", currentSelection[1]);
-    console.log("mapping 0:", mapping[currentSelection[1]]);
+    // console.log("currentSelection[0]", currentSelection[0]);
+    // console.log("mapping 0:", mapping[currentSelection[0]]);
+    // console.log("currentSelection[1]", currentSelection[1]);
+    // console.log("mapping 0:", mapping[currentSelection[1]]);
   };
   return (
     <button
-      className={`h-36 w-36 flex justify-center items-center rounded-lg shadow-lg border border-tan hover:bg-card-color-selected ${
+      className={`${
+        gridSize == 2 ? "h-64 w-64" : "h-36 w-36"
+      }  flex justify-center items-center rounded-lg shadow-lg border-4 m-1 border-black ${
+        !isPlaying && !matched.includes(idx)
+          ? "hover:bg-card-color-selected"
+          : ""
+      } ${
         matched.includes(idx)
           ? "bg-card-color-matched"
           : currentSelection[0] === idx || currentSelection[1] === idx
@@ -42,7 +52,7 @@ export const Card = ({
           : "bg-card-color-unselected"
       }`}
       onClick={doOnClick}
-      disabled={matched.includes(idx)}
+      disabled={isPlaying || matched.includes(idx)}
     >
       {matched.includes(idx) ? (
         <svg
