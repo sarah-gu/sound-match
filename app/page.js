@@ -102,7 +102,7 @@ export default function Home() {
       </div>
       <div className="flex flex-row m-2">
         <div className="flex flex-col p-3 basis-1/6">
-          <div className="text-sm">
+          <div className="text-sm flex flex-row gap-2">
             <button
               className="w-24 text-white bg-black hover:bg-card-color-selected rounded-md h-8 flex justify-center items-center font-bold"
               onClick={() => {
@@ -110,6 +110,9 @@ export default function Home() {
               }}
             >
               pick level
+            </button>
+            <button className="w-16 bg-white text-black border hover:bg-card-color-selected rounded-md h-8 flex justify-center items-center font-bold">
+              <a href="/about">about</a>
             </button>
           </div>
           {displayMenu ? (
