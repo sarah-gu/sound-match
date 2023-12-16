@@ -7,6 +7,7 @@ import { bestMusicPieces } from "./evolution.js";
  */
 export function getRandomSynthMethod() {
   var synths = [];
+  console.log("whats happening");
   for (let i = 0; i < 8; i++) {
     const synthMethods = ["useAdditive", "useFrequency", "useWave"];
     const randomIndex =
@@ -23,18 +24,16 @@ export function getRandomSynthMethod() {
     // Set the randomly chosen variable to true
     synthFlags[synthMethods[randomIndex]] = true;
 
-    if(synthFlags.useAdditive) {
+    if (synthFlags.useAdditive) {
       const numPart = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
       const lfoSwitch = Math.random() < 0.5; // Random boolean
       const lfoFreq = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
       const lfoGain = Math.floor(getRandomInRange(1, 10)); // Random value between 1 and 10
-      synthVals = [numPart, lfoSwitch ? 1 : 0, lfoFreq, lfoGain]
-
-    } else if(synthFlags.useFrequency){
+      synthVals = [numPart, lfoSwitch ? 1 : 0, lfoFreq, lfoGain];
+    } else if (synthFlags.useFrequency) {
       const modIndexValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
       const modFreqValue = Math.floor(getRandomInRange(1, 100)); // Random value between 1 and 100
-      synthVals = [modIndexValue, modFreqValue]
-
+      synthVals = [modIndexValue, modFreqValue];
     }
     synths.push([synthFlags, synthVals]);
   }
@@ -158,7 +157,6 @@ function fmSynthesis(
   // Connect the gain node to the global gain
   gainNode.connect(globalGain);
 }
-
 
 /**
  * Function to generate a random waveform for wavetable synthesis.
@@ -325,7 +323,7 @@ function play_melody(
   useAdditive,
   useFrequency,
   useWave,
-  synthVals, 
+  synthVals,
   globalGain,
   audioCtx,
   setIsPlaying
@@ -386,56 +384,77 @@ function choose_sound(
   switch (number) {
     case 1:
       frequencies = bestMusicPieces[0];
-      synthFlags = synths[0][0];
-      synthVals = synths[0][1];
-
+      if (level == 3) {
+        synthFlags = synths[0][0];
+        synthVals = synths[0][1];
+      }
       break;
 
     case 2:
       frequencies = bestMusicPieces[1];
-      synthFlags = synths[1][0];
-      synthVals = synths[1][1];
+      if (level == 3) {
+        synthFlags = synths[1][0];
+        synthVals = synths[1][1];
+      }
       break;
 
     case 3:
       frequencies = bestMusicPieces[2];
-      synthFlags = synths[2][0];
-      synthVals = synths[2][1];
+      if (level == 3) {
+        synthFlags = synths[2][0];
+        synthVals = synths[2][1];
+      }
+
       break;
 
     case 4:
       frequencies = bestMusicPieces[3];
-      synthFlags = synths[3][0];
-      synthVals = synths[3][1];
+      if (level == 3) {
+        synthFlags = synths[3][0];
+        synthVals = synths[3][1];
+      }
+
       break;
 
     case 5:
       frequencies = bestMusicPieces[4];
-      synthFlags = synths[4][0];
-      synthVals = synths[4][1];
+      if (level == 3) {
+        synthFlags = synths[4][0];
+        synthVals = synths[4][1];
+      }
+
       break;
 
     case 6:
       frequencies = bestMusicPieces[5];
-      synthFlags = synths[5][0];
-      synthVals = synths[5][1];
+      if (level == 3) {
+        synthFlags = synths[5][0];
+        synthVals = synths[5][1];
+      }
+
       break;
 
     case 7:
       frequencies = bestMusicPieces[6];
-      synthFlags = synths[6][0];
-      synthVals = synths[6][1];
+      if (level == 3) {
+        synthFlags = synths[6][0];
+        synthVals = synths[6][1];
+      }
+
       break;
 
     case 8:
+      if (level == 3) {
+        synthFlags = synths[7][0];
+        synthVals = synths[7][1];
+      }
       frequencies = bestMusicPieces[7];
-      synthFlags = synths[7][0];
-      synthVals = synths[7][1];
+
       break;
 
     default:
-    // code block
-    console.log(synthFlags);
+      // code block
+      console.log(synthFlags);
   }
   if (level == 3) {
     console.log("synth_flags");

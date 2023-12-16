@@ -4,8 +4,10 @@ export default function Home() {
       <div className="text-5xl font-bold p-8 flex justify-center border-b-2 text-black">
         about sound match
       </div>
-
-      <div className="text-xl flex flex-col p-12 gap-8 m-4">
+      <button className="w-24 bg-black text-white border hover:bg-card-color-selected rounded-md flex justify-center items-center font-bold m-4">
+        <a href="/">game</a>
+      </button>
+      <div className="text-xl flex flex-col px-12 gap-8 mx-4">
         <div className="text-2xl bg-blue border rounded-lg p-8">
           Our project — SoundMatch — aims to help players strengthen their
           musical ear! As the levels progress, matching gets more difficult and
