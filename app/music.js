@@ -1,5 +1,10 @@
+// Import bestMusicPieces array from evolution file
 import { bestMusicPieces } from "./evolution.js";
 
+/**
+ * Function to generate an array of random synthesizer configurations.
+ * @returns {Array} Array of synthesizer configurations.
+ */
 export function getRandomSynthMethod() {
   var synths = [];
   for (let i = 0; i < 8; i++) {
@@ -43,6 +48,17 @@ function getRandomInRange(min, max) {
   return Math.random() * (max - min) + min;
 }
 
+/**
+ * Additive synthesis function.
+ * @param {AudioNode} gainNode - Gain node for controlling volume.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {number} numPart - Number of partials for additive synthesis.
+ * @param {number} note - Frequency of the note being played.
+ * @param {number} lfoSwitch - Boolean indicating whether LFO is applied.
+ * @param {number} lfoFreqVal - LFO frequency value.
+ * @param {number} lfoGainVal - LFO gain value.
+ * @param {AudioNode} globalGain - Global gain node.
+ */
 function additive(
   gainNode,
   audioCtx,
@@ -95,6 +111,15 @@ function additive(
   gainNode.connect(globalGain);
 }
 
+/**
+ * Frequency Modulation (FM) Synthesis function.
+ * @param {AudioNode} gainNode - Gain node for controlling volume.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {number} note - Frequency of the note being played.
+ * @param {number} modIndexValue - Modulation index value for FM synthesis.
+ * @param {number} modFreqValue - Modulator frequency value for FM synthesis.
+ * @param {AudioNode} globalGain - Global gain node.
+ */
 function fmSynthesis(
   gainNode,
   audioCtx,
@@ -134,6 +159,12 @@ function fmSynthesis(
   gainNode.connect(globalGain);
 }
 
+
+/**
+ * Function to generate a random waveform for wavetable synthesis.
+ * @param {number} length - Length of the waveform array.
+ * @returns {Float32Array} Random waveform represented as a Float32Array.
+ */
 function generateRandomWaveform(length) {
   const waveform = new Float32Array(length);
   for (let i = 0; i < length; i++) {
@@ -143,6 +174,13 @@ function generateRandomWaveform(length) {
   return waveform;
 }
 
+/**
+ * Wavetable Synthesis function.
+ * @param {AudioNode} gainNode - Gain node for controlling volume.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {number} note - Frequency of the note being played.
+ * @param {AudioNode} globalGain - Global gain node.
+ */
 function wavetableSynthesis(gainNode, audioCtx, note, globalGain) {
   console.log("wave");
 
@@ -167,6 +205,18 @@ function wavetableSynthesis(gainNode, audioCtx, note, globalGain) {
   gainNode.connect(globalGain);
 }
 
+/**
+ * Function to play a musical note.
+ * @param {number} note - Frequency of the note.
+ * @param {boolean} useAdditive - Whether additive synthesis is applied.
+ * @param {boolean} useFrequency - Whether frequency modulation synthesis is applied.
+ * @param {boolean} useWave - Whether wavetable synthesis is applied.
+ * @param {Array} synthVals - Array of synthesizer values.
+ * @param {AudioNode} globalGain - Global gain node.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {number} index - Index of the note in the melody.
+ * @param {function} setIsPlaying - Callback function to set playing state.
+ */
 function play_note(
   note,
   useAdditive,
@@ -259,58 +309,17 @@ function play_note(
   }, 300);
 }
 
-// function play_note(note, globalGain, audioCtx, index, setIsPlaying) {
-//   console.log("play");
-
-//   const selectedWaveform = "sine";
-
-//   const osc = audioCtx.createOscillator();
-//   const gainNode = audioCtx.createGain();
-
-//   // Set up the ADSR envelope
-//   const attackTime = 0.05;
-//   const decayTime = 0.3;
-//   const sustainLevel = 0.25;
-
-//   const currentTime = audioCtx.currentTime;
-
-//   // Start the oscillator
-//   osc.frequency.setValueAtTime(note, currentTime);
-//   osc.type = selectedWaveform;
-//   osc.connect(gainNode);
-//   osc.start(currentTime);
-
-//   // Apply the envelope
-//   gainNode.gain.setValueAtTime(0.001, currentTime);
-//   gainNode.gain.exponentialRampToValueAtTime(0.8, currentTime + attackTime);
-//   gainNode.gain.exponentialRampToValueAtTime(
-//     sustainLevel,
-//     currentTime + attackTime + decayTime
-//   );
-
-//   // Connect the gain node to the global gain
-//   gainNode.connect(globalGain);
-
-//   setTimeout(() => {
-//     // Release note
-//     const releaseTime = 0.5;
-
-//     // Apply the release envelope
-//     gainNode.gain.cancelScheduledValues(currentTime); // Clear any scheduled changes
-//     gainNode.gain.setValueAtTime(gainNode.gain.value, currentTime);
-//     gainNode.gain.linearRampToValueAtTime(0.0001, currentTime + releaseTime);
-
-//     // Stop the oscillator and disconnect the gain node
-//     osc.stop(currentTime + releaseTime);
-//     osc.onended = () => {
-//       gainNode.disconnect();
-//     };
-//     if (index == 4) {
-//       setIsPlaying(false);
-//     }
-//   }, 300);
-// }
-
+/**
+ * Function to play a melody of musical notes.
+ * @param {Array} frequencies - Array of frequencies representing the melody.
+ * @param {boolean} useAdditive - Whether additive synthesis is applied.
+ * @param {boolean} useFrequency - Whether frequency modulation synthesis is applied.
+ * @param {boolean} useWave - Whether wavetable synthesis is applied.
+ * @param {Array} synthVals - Array of synthesizer values.
+ * @param {AudioNode} globalGain - Global gain node.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {function} setIsPlaying - Callback function to set playing state.
+ */
 function play_melody(
   frequencies,
   useAdditive,
@@ -322,10 +331,16 @@ function play_melody(
   setIsPlaying
 ) {
   console.log("melody");
-  const restDuration = 700; // 0.5 seconds
+  const restDuration = 700; // 0.7 seconds
 
+  /**
+   * Iterate over each frequency in the frequencies array, and schedule a timeout for playing each note.
+   * The timeout duration is determined by the index of the note multiplied by the restDuration constant.
+   */
   frequencies.forEach((frequency, index) => {
+    // Schedule a timeout to play the note after a certain duration
     setTimeout(() => {
+      // Call the play_note function with the specified parameters
       play_note(
         frequency,
         useAdditive,
@@ -342,6 +357,15 @@ function play_melody(
   });
 }
 
+/**
+ * Function to choose a musical sound based on a given number.
+ * @param {number} number - Number representing the selected sound.
+ * @param {AudioNode} globalGain - Global gain node.
+ * @param {AudioContext} audioCtx - AudioContext for managing audio processing.
+ * @param {function} setIsPlaying - Callback function to set playing state.
+ * @param {Array} synths - Array of synthesizer configurations.
+ * @param {number} level - Level of the musical piece.
+ */
 function choose_sound(
   number,
   globalGain,
