@@ -28,14 +28,14 @@ const generateMapping = ({ gridSize, level }) => {
     mapping.forEach((card, idx) => {
       if (!alreadySet.includes(card)) {
         const synth = synthMethods[card - 1][0];
-        const synthVals = synthMethods[card - 1][1]
+        const synthVals = synthMethods[card - 1][1];
         console.log(synth);
         if (!alreadySet.includes(card)) {
           wordCards[idx] = synth.useAdditive
-            ? "additive"
+            ? `ADDITIVE,\n lfo switch: ${synthVals[1]}\n lfo freq: ${synthVals[2]}\n lfo gain: ${synthVals[2]}`
             : synth.useFrequency
-            ? "frequency"
-            : "waveform";
+            ? `FREQUENCY,\n mod index: ${synthVals[0]}\n mod freq: ${synthVals[1]}\n`
+            : "WAVEFORM";
           alreadySet.push(card);
         }
       }
